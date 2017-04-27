@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+    >
+   <description>
+       <![CDATA[
+       描述内容. 学习面向切面编程
+       ]]>
+   </description>
+
+    <!-- 配置要扫描的基础包.
+       要扫描的是包.不是类.
+       cn.sxt - 当前包及子包中所有的类
+       cn.sxt.* - 所有子包中的类
+    -->
+    <!--配置切面, 配置SpringAOP -->
+    <context:component-scan base-package="cn.sxt.service"/>
+
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+

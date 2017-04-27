@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+    >
+   <description>
+       <![CDATA[
+       描述内容. 配置MyBatis中SqlSessionFactory的配置文件.
+       ]]>
+   </description>
+
+    <!-- 配置SqlSessionFactory. 导入了一个mybatis-spring-x.x.x.jar
+		在jar包中,定义了spring和mybatis整合相关的类型.
+	 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="mapperLocations">
+            <array>
+                <!-- 导入目录cn/sxt/mapper/中的所有xml配置文件. -->
+                <value>classpath:cn/sxt/spring/mapper/*.xml</value>
+            </array>
+        </property>
+        <property name="typeAliasesPackage">
+            <value>cn.sxt.entity</value>
+        </property>
+    </bean>
+    <!-- 第二种配置方案
+		自动扫描basePackage中的接口和XML配置文件.实现动态代理对象的创建.
+		相当于MapperFactoryBean的简写.
+	 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.sxt.spring.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+    <!-- 第一种配置方案 -->
+     <!--<bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"-->
+        <!--abstract="true" lazy-init="true">-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    <!--</bean>-->
+
+    <!--<bean id="userMapper" parent="baseMapper">-->
+        <!--<property name="mapperInterface" value="cn.sxt.spring.mapper.UserMapper" />-->
+    <!--</bean>-->
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+

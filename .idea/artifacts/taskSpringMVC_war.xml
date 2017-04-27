@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="taskSpringMVC:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="taskSpringMVC.war">
+      <element id="artifact" artifact-name="taskSpringMVC:war exploded" />
+    </root>
+  </artifact>
+</component>

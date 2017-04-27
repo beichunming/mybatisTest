@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sxt.spring.mapper.UserMapper">
+
+    <!--插入用户-->
+    <insert id="insertUser">
+        INSERT INTO tb_user (name,login_name,login_pswd,remark,group_id)
+        VALUES (#{name},#{loginName},#{loginPswd},#{remark},#{groupId})
+    </insert>
+    <select id="getUserByPage" resultType="User">
+        SELECT id,name,login_name AS loginName,login_pswd AS loginPswd,remark,group_id AS groupId FROM tb_user
+        <if test="user!=null">
+            <where>
+                <if test="user.groupId!=0">
+                    AND group_id=#{user.groupId}
+                </if>
+            </where>
+        </if>
+
+        ORDER BY id ASC
+        limit #{start},#{pageSize}
+    </select>
+    <!--符合条件的用户个数-->
+    <select id="getUserCounts" resultType="java.lang.Integer">
+          SELECT count(id) FROM tb_user WHERE group_id=#{groupId}
+    </select>
+
+    <!--根据用户名密码查询用户-->
+    <resultMap id="group" type="cn.sxt.entity.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result  column="loginName" property="loginName"/>
+        <result  column="loginPswd" property="loginPswd"/>
+        <result  column="remark" property="remark"/>
+        <result  column="groupId" property="groupId"/>
+        <association property="group" javaType="cn.sxt.entity.Group">
+           <id column="gid" property="id"/>
+            <result column="gname" property="name"/>
+            <result column="gremark" property="remark"/>
+        </association>
+    </resultMap>
+
+      <select id="getUserByNameAndPwd" resultMap="group">
+           SELECT u.id,u.name,login_name AS loginName,login_pswd AS loginPswd,u.remark,group_id AS groupId,
+g.id as gid,g.name as gname,g.remark AS gremark
+FROM tb_user u JOIN tb_group g ON u.group_id=g.id
+WHERE login_name=#{loginName} and login_pswd=#{loginPswd}
+      </select>
+
+</mapper>

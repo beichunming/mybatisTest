@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd"
+    >
+   <description>
+       <![CDATA[
+       描述内容. 学习面向切面编程
+       ]]>
+   </description>
+    <!-- 配置一个事务管理器.是一个Spring定义好的java类.
+         MyBatis是一个轻量级封装的框架.封装的级别比较轻.层次少.对JDBC的封装少.
+         MyBatis框架对事务管理,都是借助JDBC实现的.
+         使用的事务管理器,就是DataSourceTransactionManager.
+      -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 定义一套通知,实现事务的细粒度管理. -->
+    <tx:advice transaction-manager="transactionManager" id="txAdvice">
+        <!-- 配置事务管理通知属性. -->
+        <tx:attributes>
+            <tx:method name="register" isolation="DEFAULT" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="getUserByName" read-only="true"/>
+            <tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED"
+                       rollback-for="java.lang.Exception"/>
+            <tx:method name="update*" isolation="DEFAULT" propagation="REQUIRED"
+                       rollback-for="java.lang.Exception"/>
+            <tx:method name="delete*" isolation="DEFAULT" propagation="REQUIRED"
+                       rollback-for="java.lang.Exception"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="*" isolation="DEFAULT" propagation="REQUIRED"
+                       rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- 配置切面 -->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.sxt.service.*.*(..))"/>
+    </aop:config>
+
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+

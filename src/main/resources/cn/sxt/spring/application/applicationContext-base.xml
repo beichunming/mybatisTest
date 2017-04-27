@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+    >
+   <description>
+       <![CDATA[
+       描述内容. 配置Spring整合JDBC技术中的基础数据
+    		如 : 数据源
+       ]]>
+   </description>
+    <!-- 使用spring的技术,读取properties配置文件. -->
+    <bean id="placeholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <array>
+                <!-- 相对于当前配置文件开始相对路径寻址.
+                   spring支持相对于classpath开始相对路径寻址的配置方案.
+                   classpath:xxx
+                   classpath前缀,在spring的配置文件中非常有用.只要需要读取其他的资源,都可以通过前缀配置路径
+                -->
+                <value>classpath:cn/sxt/config/commons/DBUtil.properties</value>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 数据源, 如果spring容器读取了properties配置文件内容. 那么可以通过springEL表达式中的${key}
+		访问properties配置文件的value
+	 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${mysqlDriver}" />
+        <property name="url" value="${mysqlUrl}" />
+        <property name="username" value="${mysqlUser}" />
+        <property name="password" value="${mysqlPassword}" />
+    </bean>
+
+
+    <!--<bean id="template" class="org.springframework.jdbc.core.JdbcTemplate">-->
+    <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
